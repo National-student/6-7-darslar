@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Render_Movies</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+    
+    <header>
+		<div class="container">
+			<h2 class="h2 text-center mt-3">Movies catolog</h2>
+		</div>
+	</header>
+	
+	<main>
+		<aside>
+			<div class="container">
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<form id="form">
+							<input id="search_input" class="form-control" type="text" placeholder="Search">
+							
+							<input id="rating" class="form-control mt-3" type="number" min="5" max="10" step="0.1" placeholder="Enter Rating">
+							
+							<select class="form-select mt-3" id="category-select">
+								<option value="All">All</option>
+							</select>
+							
+							<select class="form-select mt-3" name="" id="rating_sort">
+								<option value="high">Rating (high to low)</option>
+								<option value="low">Rating (low to high)</option>
+							</select>
+							
+							<button id="btn" type="submit" class="btn btn-primary w-100 mt-3">Search</button>
+						</form>
+						
+						<h3 class="h3 mt-4">Bookmarked movies</h3>
+						
+						<ul class="list-group pb-5">
+												
+						</ul>
+						
+					</div>
+					
+					<div class="col-md-8">
+						<h5 id="h5" class="h5">Search results: <span id="search-result">0</span></h5>
+						<div class="alert alert-info" role="alert">
+							Use the form on the left to search for a movie
+						</div>
+						
+						<div id="wrapper" class="wrapper d-flex flex-wrap">
+							<div class="card me-3 mb-3" style="width: 22rem;">
+								<img src="https://i.ytimg.com/vi/4hZi5QaMBFc/mqdefault.jpg" class="card-img-top" style="height: 220px;">
+								
+							</div>
+						</div>
+						
+						<div class="d-flex justify-content-center mt-4">
+							<div class="btn-group me-2" role="group" aria-label="First group">
+								<button type="button" class="btn btn-outline-primary">1</button>
+								<button type="button" class="btn btn-outline-primary">2</button>
+								<button type="button" class="btn btn-outline-primary">3</button>
+								<button type="button" class="btn btn-outline-primary">4</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</aside>
+	</main>
+
+	<template id="movie_template">
+		<div class="card me-3 mb-3" style="width: 22rem;">
+			<img src="https://i.ytimg.com/vi/4hZi5QaMBFc/mqdefault.jpg" class="card-img-top" style="height: 220px;">
+			<div class="card-body">
+				<h5 class="card-title fw-bolder text-danger">Patton Oswalt: Annihilation</h5>
+				<div class="d-flex">
+					<p class="ms-2 fw-bolder">Released: <span class="card-year"></span></p>
+				</div>
+				<div class="d-flex">
+					<p class="ms-2 fw-bolder">Categories: <span class="card-category"></span></p>
+				</div>
+				<div class="d-flex">
+					<p class="ms-2 fw-bolder">Rate: <span class="card-rate"></span></p>
+				</div>
+				<div class="pb-3">
+					<a class="btn btn-outline-primary btn-sm me-3 card-link" href="https://www.youtube.com/watch?v=4hZi5QaMBFc" target="_blank">Watch trailer</a>
+					<button class="btn btn-outline-info btn-sm me-3">More info</button>
+					<button class="btn btn-outline-success btn-sm bookmark-btn">Bookmarks</button>
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<template class="bookmarked-list">
+		<li class="list-group-item">
+			<p class="fw-bold">Avegers: Infinity War</p>
+			<button type="button" class="btn btn-danger">Remove</button>
+		</li>
+	</template>
+
+    <script src="js/bootstrap.js"></script>
+    <script src="js/movies.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
