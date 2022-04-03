@@ -10,11 +10,13 @@ let elSort = document.querySelector('#rating_sort');
 let elBtn = document.querySelector('#btn');
 let elResult = document.querySelector('#search-result');
 let elTemplate = document.querySelector('#movie_template').content;
-let elBookmarkTemplate = document.querySelector('.bookmarked-list').content;
+let elBookmarkTemplate = document.querySelector('#bookmarked-list').content;
+let elMovieModal = document.querySelector('.movie-modal')
+let elMovieAlert = document.querySelector('.movie-alert')
 
 // Get movies list 
 
-let sliceMovies = movies.slice(0, 10);
+let sliceMovies = movies.slice(0, 10)
 
 let normalizedMovieList = sliceMovies.map((movieItem, index) => {
 
@@ -25,6 +27,7 @@ let normalizedMovieList = sliceMovies.map((movieItem, index) => {
         year: movieItem.movie_year,
         category: movieItem.Categories,
         rating: movieItem.imdb_rating,
+        summary: movieItem.summary,
         imageLink: `https://i.ytimg.com/vi/${movieItem.ytid}/mqdefault.jpg`,
         youtubeLink: `https://www.youtube.com/watch?v=${movieItem.ytid}`  
 
@@ -81,6 +84,7 @@ function renderMovies(movieArray, wrapper) {
         templateDiv.querySelector('.card-rate').textContent = movie.rating;
         templateDiv.querySelector('.card-link').href = movie.youtubeLink;
         templateDiv.querySelector('.bookmark-btn').dataset.movieItemId = movie.id;
+        templateDiv.querySelector('.modal-btn').dataset.movieModal = movie.id;
 
         elFragment.appendChild(templateDiv)
 
@@ -88,7 +92,17 @@ function renderMovies(movieArray, wrapper) {
 
     wrapper.appendChild(elFragment);
 
-    elResult.textContent = movieArray.length;
+    let movieList = movieArray.length
+    elResult.textContent = movieList;
+
+    if (movieList === 0) {
+        elMovieAlert.classList.add('alert-danger');
+        elMovieAlert.textContent = "No movie was found"
+    } else {
+        elMovieAlert.classList.remove('alert-danger');
+        elMovieAlert.textContent = 'Use the form on the left to search for a movie'
+    }
+
 }
 
 renderMovies(normalizedMovieList, elWrapper);
@@ -130,6 +144,73 @@ elForm.addEventListener("input", function(evt) {
 })
 
 
+// bookmarks stored in memory
+let storage = window.localStorage;
+let bookmarkedMovies = JSON.parse(storage.getItem('movieArrayList')) || [];
+
+elWrapper.addEventListener('click', evt => {
+    let movieId = evt.target.dataset.movieItemId;
+
+    if (movieId) {
+         let foundMovie = normalizedMovieList.find( item => item.id == movieId)
+
+         let doesInclude = bookmarkedMovies.findIndex( item => item.id === foundMovie.id)
+
+         if (doesInclude === -1) {
+             bookmarkedMovies.push(foundMovie)
+             storage.setItem('movieArray', JSON.stringify(bookmarkedMovies))
+             
+             renderBookmarkedMovies(bookmarkedMovies, elBookmarkedList)
+            }
+    }
+})
+
+// Render bookmarked movies
+
+function renderBookmarkedMovies(array, wrapper) {
+    wrapper.innerHTML = null;
+    let elFragment = document.createDocumentFragment()
+    array.forEach(item => {
+        let templateBookmark = elBookmarkTemplate.cloneNode(true)
+
+        templateBookmark.querySelector('.movie-title').textContent = item.title
+        templateBookmark.querySelector('.btn-remove').dataset.markedId = item.id
+
+        elFragment.appendChild(templateBookmark)
+    })
+
+    wrapper.appendChild(elFragment)
+}
+
+renderBookmarkedMovies(bookmarkedMovies, elBookmarkedList)
 
 
+elBookmarkedList.addEventListener("click", evt => {
+    let removedMovieId = evt.target.dataset.markedId;
+    
+    if (removedMovieId) {
+        let indexOfMovie = bookmarkedMovies.findIndex(item => item.id == removedMovieId
+        )
+        
+        bookmarkedMovies.splice(indexOfMovie, 1)
+        storage.setItem("movieArray", JSON.stringify(bookmarkedMovies))
+       
+        storage.clear()
+        
+        renderBookmarkedMovies(bookmarkedMovies, elBookmarkedList);
+    }
+    
+})
 
+// Movieid for modal
+
+elWrapper.addEventListener('click', evt => {
+    let moreInfoModal = evt.target.dataset.movieModal
+    
+    if (moreInfoModal) {
+        let findMovie = normalizedMovieList.find( item => item.id == moreInfoModal)
+
+        elMovieModal.querySelector('.movie-heading-title').textContent = findMovie.title;
+        elMovieModal.querySelector('.movie-modal-text').textContent = findMovie.summary;
+   }
+})

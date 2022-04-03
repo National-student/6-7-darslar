@@ -39,7 +39,7 @@
 						
 						<h3 class="h3 mt-4">Bookmarked movies</h3>
 						
-						<ul class="list-group pb-5">
+						<ul class="list-group pb-5 bookmarked-list">
 												
 						</ul>
 						
@@ -47,8 +47,8 @@
 					
 					<div class="col-md-8">
 						<h5 id="h5" class="h5">Search results: <span id="search-result">0</span></h5>
-						<div class="alert alert-info" role="alert">
-							Use the form on the left to search for a movie
+						<div class="alert alert-info movie-alert" role="alert">
+							Internet is not working
 						</div>
 						
 						<div id="wrapper" class="wrapper d-flex flex-wrap">
@@ -71,7 +71,25 @@
 			</div>
 		</aside>
 	</main>
-
+	
+	<div class="modal fade movie-modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title movie-heading-title" id="staticBackdropLabel">Sanjar</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body movie-modal-text">
+			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius at a voluptates, incidunt quibusdam praesentium.
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Understood</button>
+			</div>
+		</div>
+		</div>
+	</div>
+		
 	<template id="movie_template">
 		<div class="card me-3 mb-3" style="width: 22rem;">
 			<img src="https://i.ytimg.com/vi/4hZi5QaMBFc/mqdefault.jpg" class="card-img-top" style="height: 220px;">
@@ -88,17 +106,19 @@
 				</div>
 				<div class="pb-3">
 					<a class="btn btn-outline-primary btn-sm me-3 card-link" href="https://www.youtube.com/watch?v=4hZi5QaMBFc" target="_blank">Watch trailer</a>
-					<button class="btn btn-outline-info btn-sm me-3">More info</button>
+					<button type="button" class="btn btn-outline-info btn-sm me-3 modal-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+						More info
+					</button>
 					<button class="btn btn-outline-success btn-sm bookmark-btn">Bookmarks</button>
 				</div>
 			</div>
 		</div>
 	</template>
 
-	<template class="bookmarked-list">
+	<template id="bookmarked-list">
 		<li class="list-group-item">
-			<p class="fw-bold">Avegers: Infinity War</p>
-			<button type="button" class="btn btn-danger">Remove</button>
+			<p class="fw-bold movie-title">Avegers: Infinity War</p>
+			<button type="button" class="btn btn-danger btn-remove">Remove</button>
 		</li>
 	</template>
 
